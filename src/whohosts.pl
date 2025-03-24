@@ -197,7 +197,8 @@ my %DNS_PATTERNS = (
 # This pattern is matched un-anchored, case-insensitively.
 my %WHOIS_PATTERNS = (
 	'ADVANCEDHOSTERS-AS'		=> "Advanced Hosting / DataWeb",
-	'AKAMAI'			=> "Akamai",
+	'AKAMAI-LINODE'			=> "Akamai (Linode)",
+	'AKAMAI-AS'			=> "Akamai",
 	'APPLE-'			=> "Apple",
 	'AS-APPNEX'			=> "AppNexus",
 	'AS-VULTR,'			=> "Vultr",
