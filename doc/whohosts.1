@@ -1,0 +1,126 @@
+.\"
+.Dd March 12, 2025
+.Dt whohosts 1
+.Os
+.Sh NAME
+.Nm whohosts
+.Nd try to determine who hosts a given domain
+.Sh SYNOPSIS
+.Nm
+.Op Fl Vhv
+.Op Fl s Ar check
+.Op Ar domain Op ...
+.Sh DESCRIPTION
+The
+.Nm
+tool attempts to determine who hosts a given domain.
+It does this by looking up DNS records relating to the
+domain, querying WHOIS, or making HTTP requests to the
+given domain name.
+.Pp
+If
+.Nm
+cannot make a reasonable guess based on that
+information, then it will print the AS name matched to
+the domain, either by its IP address, or by the IP
+address of one of its NS records.
+.Sh OPTIONS
+The following options are supported by
+.Nm :
+.Bl -tag -width c_config_
+.It Fl V
+Print version number and exit.
+.It Fl h
+Display help and exit.
+.It Fl s Ar check
+Skip the given check(s).
+Multiple checks can be given as a comma-separated list
+or a repeated options.
+.Ar check
+must be one of "DNS", "WHOIS", or "HTTP".
+.It Fl v
+Be verbose.
+Can be specified multiple times.
+.El
+.Sh DETAILS
+If no domain names are given on the command-line, then
+.Nm
+will read names from stdin.
+.Pp
+In order to try to guess which organization is hosting
+a given domain,
+.Nm
+performs the following checks:
+.Bl -tag -width whois_
+.It DNS
+Perform a forward DNS lookup of the given domain name.
+If a CNAME chain is found, each canonical name is
+matched against a list of known patterns.
+Otherwise, any A or AAAA records are used for a
+reverse (i.e., PTR) lookup, and the resulting name, if
+any, is matched against those patterns.
+.Pp
+If no CNAME nor A / AAAA records are found, then
+.Nm
+will look up the NS record for the domain and resolve
+that name to an IP address.
+.It WHOIS
+Perform a WHOIS lookup against the IP address(es) of
+the given domain name using Team Cymru's
+.Xr whois 1
+interface.
+Any organization names are matched against a list of
+known patterns or reported verbatim if not matched.
+.It HTTP
+Perform an HTTP "GET" request to the domain and
+attempt to match the HTTP headers returned by the
+server against a list of known patterns.
+.El
+.Pp
+These checks are performed in order, unless the
+.Fl s
+flags are given.
+The first successful match will terminate the lookup
+unless the
+.Fl a
+flag is given.
+.Pp
+Note:
+.Nm
+will only perform checks and matches against one
+result.
+This can have the side-effect that the user sees
+different results for the same domain when run
+repeatedly, for example if the domain is multi-homed.
+.Sh EXAMPLES
+To report who is hosting the given domains:
+.Bd -literal -offset indent
+$ whohosts www.microsoft.com www.office.com www.netflix.com
+www.microsoft.com: Akamai
+www.office.com: Microsoft Azure
+www.netflix.com: Netflix
+.Ed
+.Pp
+To very verbosely check a larger set of domains:
+.Bd -literal -offset indent
+$ head -1000 input | whohosts -v -v -v -v
+=> Checking www.apple.com...
+==> Checking DNS of www.apple.com...
+===> Getting CNAME chain for www.apple.com...
+==> www.apple.com -> www-apple-com.v.aaplimg.com -> www.apple.com.edgekey.net -> e6858.dsce9.akamaiedge.net
+====> Checking if e6858.dsce9.akamaiedge.net matches a known pattern...
+www.apple.com: Akamai
+[...]
+.Ed
+.Sh SEE ALSO
+.Xr host 1 ,
+.Xr whois 1
+.Sh HISTORY
+.Nm
+was originally written by
+.An Jan Schaumann
+.Aq jschauma@netmeister.org
+in February 2025.
+.Sh BUGS
+Please file bugs and feature requests by emailing the
+author or via GitHub issues or pull requests.
