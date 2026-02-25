@@ -338,7 +338,7 @@ my %OPTS;
 my $PROGNAME = basename($0);
 my $RETVAL = 0;
 my @VALID_CHECKS = ( "dns", "whois", "http" );
-my $VERSION = 0.1;
+my $VERSION = 0.2;
 
 ###
 ### Subroutines
@@ -698,6 +698,14 @@ EOH
 sub whohosts($) {
 	my ($domain) = @_;
 	verbose("Checking $domain...");
+
+	$domain =~ s/^\.//;
+	my @labels = split(/\./, $domain);
+	if (scalar(@labels) < 2) {
+		error("Invalid input '$domain' (need at least a second-level domain name).");
+		return;
+	}
+
 	if (checkDns($domain)) {
 		return;
 	}
