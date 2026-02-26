@@ -102,6 +102,7 @@ my %DNS_PATTERNS = (
 	"cdn\.bitgravity\.com"			=> "Tata communications",
 	"cdn\.geeksforgeeks\.org"		=> "GeeksForGeeksCDN",
 	"cdn\.gocache\.net"			=> "GoCache",
+	"cdn\.hstgr\.net"			=> "Hostinger",
 	"cdn\.sfr\.net"				=> "SFR",
 	"cdn\.telefonica\.com"			=> "Telefonica",
 	"cdncloud\.net\.au"			=> "MediaCloud",
@@ -201,7 +202,9 @@ my %WHOIS_PATTERNS = (
 	'AKAMAI-AS'			=> "Akamai",
 	'APPLE-'			=> "Apple",
 	'AS-APPNEX'			=> "AppNexus",
+	'AS-HOSTINGER,'			=> "Hostinger",
 	'AS-VULTR,'			=> "Vultr",
+	'AUTOMATTIC -'			=> "Wordpress",
 	'CACHENETWORKS'			=> "CacheFly",
 	'CLOUDFLARE(NET|SPECTRUM)'	=> "Cloudflare",
 	'China Mobile'			=> 'China Mobile',
@@ -271,6 +274,7 @@ my %KNOWN_AS = (
 		"20940"  => "Akamai",
 		"24429"  => "Alibaba",
 		"24941"  => "Hetzner",
+		"2635"   => "Wordpress",
 		"29066"  => "velia.net",
 		"30081"  => "CacheFly",
 		"31898"  => "Oracle Cloud Infrastructure",
@@ -338,7 +342,7 @@ my %OPTS;
 my $PROGNAME = basename($0);
 my $RETVAL = 0;
 my @VALID_CHECKS = ( "dns", "whois", "http" );
-my $VERSION = 0.2;
+my $VERSION = 0.3;
 
 ###
 ### Subroutines

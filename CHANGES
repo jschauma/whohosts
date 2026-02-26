@@ -1,3 +1,6 @@
+Version 0.3 (2026-02-26)
+* detect Wordpress and Hostinger
+
 Version 0.2 (2026-02-25)
 * don't allow bare TLDs as input
 
